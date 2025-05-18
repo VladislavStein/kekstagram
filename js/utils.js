@@ -1,23 +1,3 @@
-function getUniqueRandom(min, max, usedArray) {
-  const availableNumbers = [];
-  for (let i = min; i <= max; i++) {
-    if (!usedArray.includes(i)) {
-      availableNumbers.push(i);
-    }
-  }
-
-  if (availableNumbers.length === 0) {
-    return null;
-  }
-
-  const randomIndex = Math.floor(Math.random() * availableNumbers.length);
-  const randomNum = availableNumbers[randomIndex];
-
-  usedArray.push(randomNum);
-
-  return randomNum;
-}
-
 const getRandomInteger = (min, max) => {
   const lower = Math.ceil(Math.min(Math.abs(min), Math.abs(max)));
   const upper = Math.floor(Math.max(Math.abs(min), Math.abs(max)));
@@ -25,35 +5,35 @@ const getRandomInteger = (min, max) => {
   return Math.floor(result);
 };
 
-const names = [
-  'Михаил',
-  'Олег',
-  'Ольга',
-  'Юлия',
-  'Артём',
-  'Степан'
-];
-
-const getRandomName = () => names[getRandomInteger(0, 5)];
-
-function getRandomArray(quantity) {
-  const uniqueIds = Array.from({ length: quantity }, (_, i) => i + 1);
-  for (let i = uniqueIds.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [uniqueIds[i], uniqueIds[j]] = [uniqueIds[j], uniqueIds[i]];
+const shuffleArray = (arr) => {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1)); // случайный индекс от 0 до i
+    [arr[i], arr[j]] = [arr[j], arr[i]]; // меняем местами элементы
   }
-  return uniqueIds;
+  return arr;
 }
 
-// const uniqueIds = getRandomArray(25);
+const checkMaxLengthString = (str, maxLength) => str.length <= maxLength;
 
-const checkMaxLengthString = (string, maxLength) => {
-  if (string.length <= maxLength) {
-    return true;
-  }
-  return false;
+// const getRandomArrayElement = (elements) => elements[getRandomInteger(0, elements.length - 1)];
+
+const getRandomArrayElement = (elements) => {
+  let pool = [];
+
+  const refillPool = () => {
+    pool = shuffleArray([...elements]);
+  };
+
+  refillPool(); // инициализация при первом запуске
+
+  return function getNext() {
+    if (pool.length === 0) {
+      refillPool(); // перезапуск, если закончились
+    }
+    return pool.pop(); // возвращаем последний элемент
+  };
 };
 
-export {getRandomInteger};
-export {getUniqueRandom};
-export {getRandomName};
+const setCounter = (i = 0) => () => i++;
+
+export {getRandomInteger, checkMaxLengthString, getRandomArrayElement, setCounter};

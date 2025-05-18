@@ -1,11 +1,6 @@
-import {createDescriptionPhoto} from './create-description-photo.js';
-import {renderPictures} from './create-mini-photos.js';
-import './form.js';
-import './validation.js';
+import { getPictures } from './data.js';
+import { renderPictures } from './pictures.js';
+import { activateForm } from './form.js';
 
-const photoList = Array.from({ length: 25 }, createDescriptionPhoto);
-// console.log(JSON.stringify(photoList, null, 2));
-
-renderPictures(photoList);
-
-
+renderPictures(getPictures(25));
+activateForm();

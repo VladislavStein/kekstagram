@@ -1,38 +1,34 @@
-import {validateHashtags} from './validation.js';
+import { activateValidation, deactivateValidation } from './validation.js';
 
-const uploadForm = document.querySelector('.img-upload__form');
-const uploadFileInput = document.querySelector('#upload-file');
-const uploadOverlay = document.querySelector('.img-upload__overlay');
+const imgUpload = document.querySelector('.img-upload__input');
+const imgContainer = document.querySelector('.img-upload__overlay');
+const closeBtn = document.querySelector('.img-upload__cancel');
+const form = document.querySelector('.img-upload__form');
 
-const cancelButton = document.querySelector('#upload-cancel');
+const onCloseBtnClick = () => {
+  hideModal();
+};
 
-const hashTagsText = document.querySelector('.text__hashtags');
-const descriptionText = document.querySelector('.text__description');
-const uploadImgSubmit = document.querySelector('.img-upload__submit');
+const onFormSubmit = () => {
+  activateValidation();
+};
 
-uploadFileInput.addEventListener('change', () => {
-    uploadOverlay.classList.remove('hidden');
-    document.body.classList.add('modal-open');
-});
-
-cancelButton.addEventListener('click', () => {
-    closeUploadForm();
-});
-
-uploadImgSubmit.addEventListener('submit', (evt) => {
-    evt.preventDefault();
-
-    //Валидация данных ВСТАВИТЬ
-
-    uploadForm.submit();
-});
-
-const closeUploadForm = () => {
-    console.log('Закрываем форму');
-    console.log('Класс modal-open есть до удаления:', document.body.classList.contains('modal-open'));
-    uploadOverlay.classList.add('hidden');
-    document.body.className = document.body.className.replace('modal-open', '').trim();
-    console.log('Класс modal-open удален:', !document.body.classList.contains('modal-open'));
-    uploadForm.reset();
+function hideModal() {
+  imgContainer.classList.add('hidden');
+  closeBtn.removeEventListener('click', onCloseBtnClick);
+  deactivateValidation();
 }
 
+function showModal() {
+  imgContainer.classList.remove('hidden');
+  closeBtn.addEventListener('click', onCloseBtnClick);
+  form.addEventListener('submit', onFormSubmit);
+}
+
+const onImgUploadChange = () => {
+  showModal();
+};
+
+const activateForm = () => imgUpload.addEventListener('change', onImgUploadChange);
+
+export { activateForm };
