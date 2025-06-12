@@ -2,6 +2,48 @@ const bigPicture = document.querySelector('.big-picture');
 const body = document.querySelector('body');
 const closeBtn = document.querySelector('.big-picture__cancel');
 
+const scaleBigger = document.querySelector('.scale__control--bigger');
+const scaleSmaller = document.querySelector('.scale__control--smaller');
+const scaleValue = document.querySelector('.scale__control--value');
+const imgUpload = document.querySelector('.img-upload__preview');
+
+//Scale
+const onScaleBigger = () => {
+  const currentValue = parseInt(scaleValue.value, 10);
+  if (currentValue < 100) {
+    scaleValue.value = `${currentValue + 25}%`;
+    imgUpload.style.transform = `scale(${currentValue + 25}%)`;
+  }
+};
+
+const onScaleSmaller = () => {
+  const currentValue = parseInt(scaleValue.value, 10);
+  if (currentValue > 25) {
+    scaleValue.value = `${currentValue - 25}%`;
+    imgUpload.style.transform = `scale(${currentValue - 25}%)`;
+  }
+};
+
+scaleBigger.addEventListener('click', onScaleBigger);
+scaleSmaller.addEventListener('click', onScaleSmaller);
+//
+
+//Effects
+const radios = document.querySelectorAll('.img-upload__effects input[type="radio"]');
+radios.forEach((radio) => {
+  radio.addEventListener('change', () => {
+    // Удаляем все эффекты
+    imgUpload.classList.remove('effects__preview--chrome', 'effects__preview--sepia', 'effects__preview--marvin', 'effects__preview--phobos', 'effects__preview--heat');
+    
+    // Добавляем выбранный эффект
+    if (radio.checked) {
+      const effectClass = `effects__preview--${radio.value}`;
+      imgUpload.classList.add(effectClass);
+    }
+  });
+});
+//
+
 const onCloseBtnClick = () => {
   hideModal();
 };
