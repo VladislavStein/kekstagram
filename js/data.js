@@ -44,7 +44,7 @@ const photoId = setCounter(1);
 
 const createPicture = () => {
   const index = photoId();
-  const commentsCount = getRandomInteger(0, 5);
+  const commentsCount = getRandomInteger(0, 20);
   const getNextDescription = getRandomArrayElement(DESCRIPTION);
   return {
     id: index,

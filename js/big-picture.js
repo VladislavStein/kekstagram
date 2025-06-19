@@ -1,11 +1,16 @@
 const bigPicture = document.querySelector('.big-picture');
 const body = document.querySelector('body');
 const closeBtn = document.querySelector('.big-picture__cancel');
+const commentsLoader = document.querySelector('.social__comments-loader');
 
 const scaleBigger = document.querySelector('.scale__control--bigger');
 const scaleSmaller = document.querySelector('.scale__control--smaller');
 const scaleValue = document.querySelector('.scale__control--value');
 const imgUpload = document.querySelector('.img-upload__preview');
+
+let loadedCommentsCount = 0;
+const visibleComments = 5;
+let loadedComments = [];
 
 //Scale
 const onScaleBigger = () => {
@@ -34,7 +39,7 @@ radios.forEach((radio) => {
   radio.addEventListener('change', () => {
     // Удаляем все эффекты
     imgUpload.classList.remove('effects__preview--chrome', 'effects__preview--sepia', 'effects__preview--marvin', 'effects__preview--phobos', 'effects__preview--heat');
-    
+
     // Добавляем выбранный эффект
     if (radio.checked) {
       const effectClass = `effects__preview--${radio.value}`;
@@ -57,35 +62,50 @@ const showModal = () => {
 function hideModal() {
   bigPicture.classList.add('hidden');
   body.classList.remove('modal-open');
+  commentsLoader.classList.remove('hidden');
 }
 
-const getComments = (picture) => {
+const createComment = (comment) => {
+  const li = document.createElement('li');
+  li.classList.add('social__comment');
+  const img = document.createElement('img');
+  img.classList.add('social__picture');
+  const p = document.createElement('p');
+  p.classList.add('social__text');
+
+  img.src = comment.avatar;
+  img.alt = comment.name;
+
+  p.textContent = comment.message;
+
+  li.appendChild(img);
+  li.appendChild(p);
+
+  return li;
+};
+
+const onClickLoader = () => getComments(loadedComments);
+
+const getComments = (comments) => {
   const commentsCount = document.querySelector('.comments-count');
   const commentsList = document.querySelector('.social__comments');
-  const commentsLoader = document.querySelector('.social__comments-loader');
+  const commentsCounter = document.querySelector('.social__comment-counter');
 
   commentsList.innerHTML = '';
-  commentsLoader.classList.add('hidden');
-  commentsCount.textContent = picture.comments.length;
+  commentsCount.textContent = comments.length;
 
-  picture.comments.forEach((element) => {
-    const li = document.createElement('li');
-    li.classList.add('social__comment');
-    const img = document.createElement('img');
-    img.classList.add('social__picture');
-    const p = document.createElement('p');
-    p.classList.add('social__text');
-
-    img.src = element.avatar;
-    img.alt = element.name;
-
-    p.textContent = element.message;
-
-    li.appendChild(img);
-    li.appendChild(p);
-
-    commentsList.appendChild(li);
+  loadedCommentsCount += visibleComments;
+  commentsCounter.textContent = Math.min(loadedCommentsCount, comments.length);
+  if (comments.length <= loadedCommentsCount) {
+    commentsLoader.classList.add('hidden');
+  }
+  comments.slice(0, loadedCommentsCount).forEach((element) => {
+    commentsList.appendChild(createComment(element));
   });
+};
+
+const initCommentsLoader = () => {
+  commentsLoader.addEventListener('click', onClickLoader);
 };
 
 const getPicture = (picture) => {
@@ -96,10 +116,15 @@ const getPicture = (picture) => {
 };
 
 const renderBigPicture = (picture) => {
+  loadedCommentsCount = 0;
+  loadedComments = picture.comments;
   getPicture(picture);
-  getComments(picture);
+  getComments(loadedComments);
   showModal();
 };
+
+// Инициализация компонента
+initCommentsLoader();
 
 document.addEventListener('keydown', evt => {
   if (evt.key === 'Escape') {
