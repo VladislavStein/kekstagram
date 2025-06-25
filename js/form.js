@@ -1,4 +1,5 @@
 import { activateValidation, deactivateValidation } from './validation.js';
+import { activateEffect } from './slider.js';
 
 const imgUpload = document.querySelector('.img-upload__input');
 const imgContainer = document.querySelector('.img-upload__overlay');
@@ -36,6 +37,7 @@ function showModal() {
   imgContainer.classList.remove('hidden');
   closeBtn.addEventListener('click', onCloseBtnClick);
   form.addEventListener('submit', onFormSubmit);
+  activateEffect();
 }
 
 const onImgUploadChange = () => {

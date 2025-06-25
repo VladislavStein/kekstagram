@@ -34,19 +34,19 @@ scaleSmaller.addEventListener('click', onScaleSmaller);
 //
 
 //Effects
-const radios = document.querySelectorAll('.img-upload__effects input[type="radio"]');
-radios.forEach((radio) => {
-  radio.addEventListener('change', () => {
-    // Удаляем все эффекты
-    imgUpload.classList.remove('effects__preview--chrome', 'effects__preview--sepia', 'effects__preview--marvin', 'effects__preview--phobos', 'effects__preview--heat');
+// const radios = document.querySelectorAll('.img-upload__effects input[type="radio"]');
+// radios.forEach((radio) => {
+//   radio.addEventListener('change', () => {
+//     // Удаляем все эффекты
+//     imgUpload.classList.remove('effects__preview--chrome', 'effects__preview--sepia', 'effects__preview--marvin', 'effects__preview--phobos', 'effects__preview--heat');
 
-    // Добавляем выбранный эффект
-    if (radio.checked) {
-      const effectClass = `effects__preview--${radio.value}`;
-      imgUpload.classList.add(effectClass);
-    }
-  });
-});
+//     // Добавляем выбранный эффект
+//     if (radio.checked) {
+//       const effectClass = `effects__preview--${radio.value}`;
+//       imgUpload.classList.add(effectClass);
+//     }
+//   });
+// });
 //
 
 const onCloseBtnClick = () => {
