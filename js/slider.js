@@ -22,11 +22,11 @@ noUiSlider.create(sliderElement, {
 
 const applyFilter = (value, effect) => {
   const filters = {
-    'grayscale': `grayscale(${value})`,
+    'chrome': `grayscale(${value})`,
     'sepia': `sepia(${value})`,
-    'invert': `invert(${value}%)`,
-    'blur': `blur(${value}px)`,
-    'brightness': `brightness(${value})`
+    'marvin': `invert(${value}%)`,
+    'phobos': `blur(${value}px)`,
+    'heat': `brightness(${value})`
   };
   return filters[effect];
 };
@@ -82,7 +82,9 @@ const activateEffect = () => {
 };
 
 const deactivateEffect = () => {
-
+  imageElement.removeAttribute('style');
+  imageElement.removeAttribute('class');
+  effectsList.removeEventListener('change', onEffectsListChange);
 };
 
 // effectsInput.addEventListener('checked', (evt) => {   //не работает

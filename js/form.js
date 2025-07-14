@@ -1,5 +1,5 @@
 import { activateValidation, deactivateValidation } from './validation.js';
-import { activateEffect } from './slider.js';
+import { activateEffect, deactivateEffect } from './slider.js';
 
 const imgUpload = document.querySelector('.img-upload__input');
 const imgContainer = document.querySelector('.img-upload__overlay');
@@ -31,6 +31,7 @@ function hideModal() {
   imgContainer.classList.add('hidden');
   closeBtn.removeEventListener('click', onCloseBtnClick);
   deactivateValidation();
+  deactivateEffect();
 }
 
 function showModal() {
