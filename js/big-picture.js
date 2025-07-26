@@ -1,7 +1,10 @@
+import { sendData } from './server.js';
+
 const bigPicture = document.querySelector('.big-picture');
 const body = document.querySelector('body');
 const closeBtn = document.querySelector('.big-picture__cancel');
 const commentsLoader = document.querySelector('.social__comments-loader');
+const submitBtn = document.querySelector('.img-upload__submit');
 
 const scaleBigger = document.querySelector('.scale__control--bigger');
 const scaleSmaller = document.querySelector('.scale__control--smaller');
@@ -48,6 +51,13 @@ scaleSmaller.addEventListener('click', onScaleSmaller);
 //   });
 // });
 //
+
+const onSubmitBtn = () => {
+  submitBtn.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+    sendData();
+  });
+};
 
 const onCloseBtnClick = () => {
   hideModal();
@@ -121,6 +131,7 @@ const renderBigPicture = (picture) => {
   getPicture(picture);
   getComments(loadedComments);
   showModal();
+  onSubmitBtn();
 };
 
 // Инициализация компонента
