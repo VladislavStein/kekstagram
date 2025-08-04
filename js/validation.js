@@ -14,19 +14,15 @@ const pristine = new Pristine(form, {
   errorTextClass: 'img-upload__error'
 });
 
-const activateValidation = () => {
-  pristine.validate();
-};
+const activateValidation = () => pristine.validate();
 
-const deactivateValidation = () => {
-  pristine.reset();
-};
+const deactivateValidation = () => pristine.reset();
 
 pristine.addValidator(formDescription, validateText, 'Длина строки не может быть больше 140 символов');
 
 const getHashTags = (str) => str.toLowerCase().split(' ');
 
-const checkHashTagsSymbols = (value) => !hashTag || getHashTags(value).every((el) => re.test(el));
+const checkHashTagsSymbols = (value) => !value || getHashTags(value).every((el) => re.test(el));
 pristine.addValidator(hashTag, checkHashTagsSymbols, 'Хэш-тег начинается с символа # (решётка)');
 
 const checkLength = (value) => getHashTags(value).every((el) => el.length <= 20);

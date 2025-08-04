@@ -1,5 +1,7 @@
 import { activateValidation, deactivateValidation } from './validation.js';
 import { activateEffect, deactivateEffect } from './slider.js';
+import { sendData } from './server.js';
+import { showSuccessMessage, showFailMessage } from './message.js';
 
 const imgUpload = document.querySelector('.img-upload__input');
 const imgContainer = document.querySelector('.img-upload__overlay');
@@ -12,8 +14,23 @@ const onCloseBtnClick = () => {
   hideModal();
 };
 
-const onFormSubmit = () => {
-  activateValidation();
+const onSuccess = () => {
+  hideModal();
+  showSuccessMessage();
+};
+
+const onFail = () => {
+  showFailMessage();
+};
+
+const onFormSubmit = (evt) => {
+  const body = new FormData(evt.target);
+  evt.preventDefault();
+  if (activateValidation()) {
+    sendData(onSuccess, onFail, body);
+  } else {
+    console.log('Валидация неуспешна');
+  }
 };
 
 const isFocused = () => document.activeElement === formDescription || document.activeElement === hashTag;
@@ -28,6 +45,7 @@ document.addEventListener('keydown', (evt) => {
 });
 
 function hideModal() {
+  form.reset();
   imgContainer.classList.add('hidden');
   closeBtn.removeEventListener('click', onCloseBtnClick);
   deactivateValidation();
@@ -47,4 +65,4 @@ const onImgUploadChange = () => {
 
 const activateForm = () => imgUpload.addEventListener('change', onImgUploadChange);
 
-export { activateForm };
+export { activateForm, hideModal };
